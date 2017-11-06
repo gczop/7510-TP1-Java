@@ -15,34 +15,18 @@ public class Parser {
 
     public Parser(){}
 
-    public List<String> parse(String path){
-        List<String> array = new ArrayList<>();
-        try {
-            File file = new File(path);
-            Scanner input = new Scanner(file).useDelimiter("\\n");
-            while (input.hasNextLine()) {
-                array.add(input.nextLine());
-            }
-
-            input.close();
-
-
-        }catch (FileNotFoundException e){
-            //Todo: devolver error o algo
-        }
-        return array;
-    }
-
     public List<String> readFile(String path) throws IOException{
-        List<String> lines = new ArrayList<>();
-        File dbFile = new File(path);
-        BufferedReader buffer = new BufferedReader(new FileReader(dbFile));
-        String line;
-        while((line = buffer.readLine()) !=null){
-            lines.add(line);
-
-        }
-        return lines;
+            List<String> lines = new ArrayList<>();
+            File file = new File(path);
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                lines.add(line);
+            }
+            fileReader.close();
+            bufferedReader.close();
+            return lines;
     }
 
 }
