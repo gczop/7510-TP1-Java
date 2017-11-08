@@ -18,9 +18,10 @@ public  class Database {
     private FactManager factManager;
     private RuleManager ruleManager;
 
-    private String FACT_REGEX = "\\w+\\(\\w+(,\\w+)*\\)";
-    private String RULE_REGEX = "\\w+\\(\\w+(,\\ \\w+)*\\)\\ \\:\\-\\ (\\w+\\(\\w+(,\\ \\w+)*\\),\\ )*";
-//                      "\\w+\\(\\w+(, \\w+)*\\) :- (\\w+\\(\\w+(, \\w+)*\\), )*\\w+\\(\\w+(, \\w+)*\\)."
+    private String FACT_REGEX = "\\w+\\(\\w+(, \\w+)*\\).";
+    private String RULE_REGEX = "\\w+\\(\\w+(, \\w+)*\\) :- (\\w+\\(\\w+(, \\w+)*\\), )*\\w+\\(\\w+(, \\w+)*\\).";
+    //hijo(X,Y):-varon(X),padre(Y,X)
+//
 
     public Database(){
         facts = new Hashtable<>();
@@ -34,11 +35,11 @@ public  class Database {
 
     public boolean add(String value){
         if (ruleManager.isRule(value)){
-            rules.put(ruleManager.getName(value), value);
+            rules.put(filter(ruleManager.getName(value)), value);
             return true;
         }
         if(factManager.isFact(value)){
-            facts.put(value, "true");
+            facts.put(filter(value), "true");
             return true;
         }
         else{
@@ -50,16 +51,19 @@ public  class Database {
         if(!isValid(query)){
             throw new java.lang.RuntimeException("Invalid query");
         }
-        return (hasFact(query) || hasRule(query));
+        return (hasFact(filter(query)) || hasRule(filter(query)));
     }
 
 
 
 //Cosas genericas
 
+    private String filter(String line){
+        String filteredLine = line.replaceAll("\\ ","").replaceAll("\\.", "");
+        return 	filteredLine;
+    }
+
     private boolean isValid(String query){
-        boolean fact = factManager.isFact(query);
-        boolean rule = ruleManager.isRule(query);
         return factManager.isFact(query)||ruleManager.isRule(query);
     }
 

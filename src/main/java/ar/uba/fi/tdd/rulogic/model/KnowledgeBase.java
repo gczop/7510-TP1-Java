@@ -21,9 +21,7 @@ public class KnowledgeBase {
 	}
 
 	public boolean answer(String query){
-
-		String filteredQuery = filter(query);
-		return database.has(filteredQuery);
+		return database.has(query);
 	}
 
 	public void useDatabase(String path){
@@ -31,9 +29,8 @@ public class KnowledgeBase {
 		try {
 			List<String> databaseEntries = parser.readFile(path);
 			for (int i=0;i<databaseEntries.size();i++){
-				String entry = filter(databaseEntries.get(i));
-				if(!database.add(entry)){
-					System.out.printf("Entrada invalida: %s",entry);
+				if(!database.add(databaseEntries.get(i))){
+					System.out.printf("Entrada invalida: %s",databaseEntries.get(i));
 					throw new java.lang.RuntimeException("La base de datos es invalida");
 				}
 			}
@@ -43,9 +40,5 @@ public class KnowledgeBase {
 
 	}
 
-	private String filter(String line){
-		String filteredLine = line.replaceAll("\\ ","").replaceAll("\\.", "");
-		return 	filteredLine;
-	}
 
 }

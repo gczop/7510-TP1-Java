@@ -17,19 +17,19 @@ public class KnowledgeBaseTest {
 	public void setUp() throws Exception {
 		initMocks(this);
 		knowledgeBase = new KnowledgeBase();
-		knowledgeBase.useDatabase("src/main/resources/rules.db");
+		knowledgeBase.useDatabase("/src/main/resources/rules.db");
 	}
 
 	@Test
 	public void testCorrectFact1() {
 
-		Assert.assertTrue(this.knowledgeBase.answer("varon (javier)."));
+		Assert.assertTrue(this.knowledgeBase.answer("varon(juan)."));
 	}
 
 	@Test
 	public void testCorrectFact2() {
 
-		Assert.assertTrue(this.knowledgeBase.answer("mujer (maria)."));
+		Assert.assertTrue(this.knowledgeBase.answer("mujer(maria)."));
 	}
 	@Test
 	public void testCorrectFact3() {
@@ -46,20 +46,39 @@ public class KnowledgeBaseTest {
 	@Test
 	public void testIncorrectFact1() {
 
-		Assert.assertFalse(this.knowledgeBase.answer("varon(cecilia)"));
+		Assert.assertFalse(this.knowledgeBase.answer("varon(cecilia)."));
+	}
+
+	@Test
+	public void testIncorrectFact2() {
+
+		Assert.assertFalse(this.knowledgeBase.answer("piloto(kimi)."));
 	}
 
 
-	@Test
-	public void testReglaNoExiste() throws Exception {
-
-		Assert.assertFalse(this.knowledgeBase.answer("esposa(cecilia, alejandro)."));
+	@Test(expected = RuntimeException.class)
+	public void testQueryInvalidaTiraError1() {
+		this.knowledgeBase.answer("esposa");
 	}
 
 	@Test(expected = RuntimeException.class)
-	public void testInvalidQuery() {
+	public void testQueryInvalidaTiraError2() {
+		this.knowledgeBase.answer("varon(juan()).");
+	}
 
-		Assert.assertFalse(this.knowledgeBase.answer("esposa"));
+	@Test
+	public void testCorrectRule1(){
+		Assert.assertTrue(this.knowledgeBase.answer("hijo(pepe, juan)."));
+	}
+
+	@Test
+	public void testCorrectRule2(){
+		Assert.assertTrue(this.knowledgeBase.answer("tio(nicolas, cecilia, roberto)."));
+	}
+
+	@Test
+	public void testIncorrectRule1(){
+		Assert.assertFalse(this.knowledgeBase.answer("tio(julian, francisco, alfonso)."));
 	}
 
 }
