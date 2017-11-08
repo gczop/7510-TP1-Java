@@ -66,6 +66,11 @@ public class KnowledgeBaseTest {
 		this.knowledgeBase.answer("varon(juan()).");
 	}
 
+	@Test(expected = RuntimeException.class)
+	public void testQueryInvalidaTiraError3() {
+		this.knowledgeBase.answer("varon(juan)");
+	}
+
 	@Test
 	public void testCorrectRule1(){
 		Assert.assertTrue(this.knowledgeBase.answer("hijo(pepe, juan)."));
@@ -77,8 +82,17 @@ public class KnowledgeBaseTest {
 	}
 
 	@Test
-	public void testIncorrectRule1(){
+	public void testIncorrectRule2(){
 		Assert.assertFalse(this.knowledgeBase.answer("tio(julian, francisco, alfonso)."));
 	}
 
+	@Test
+	public void testIncorrectRule1(){
+		Assert.assertFalse(this.knowledgeBase.answer("hijo(julian, francisco)."));
+	}
+
+	@Test
+	public void test1(){
+		knowledgeBase.tryTest();
+	}
 }

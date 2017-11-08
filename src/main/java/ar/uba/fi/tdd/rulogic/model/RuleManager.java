@@ -15,7 +15,7 @@ public class RuleManager {
     }
 
     public boolean isRule(String query){
-        return Pattern.matches(regex, query);
+        return query.matches(regex);
     }
 
     public String getName(String rule){

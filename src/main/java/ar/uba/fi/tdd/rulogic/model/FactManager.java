@@ -22,12 +22,17 @@ public class FactManager {
 
     public List<String> getMultipleFacts(String definition){
         List<String> list = new ArrayList<>();
-        Pattern pattern = Pattern.compile(regex);
+        Pattern pattern = Pattern.compile("\\w+\\(\\w+(,\\w+)*\\)");
         Matcher matcher = pattern.matcher(definition);
         while (matcher.find()) {
             list.add(matcher.group());
         }
         return list;
+    }
+
+    public String getName(String fact){
+        String[] parts = fact.split("\\(");
+        return parts[0];
     }
 
 }

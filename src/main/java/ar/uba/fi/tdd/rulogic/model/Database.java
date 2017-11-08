@@ -1,6 +1,7 @@
 package ar.uba.fi.tdd.rulogic.model;
 
 import com.sun.deploy.security.ruleset.Rule;
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -68,11 +69,16 @@ public  class Database {
     }
 
     private String[] getParameters(String query){
-        String regex1 = "\\([^)]+\\)";
-        String regex2 = "[()]";
-        Matcher m = Pattern.compile(regex1).matcher(query);
-        String parameterString = m.group();
-        return parameterString.replace(regex2, "").split(",");
+        Pattern p = Pattern.compile("\\(([^()]+)\\)");
+        Matcher m = p.matcher(query);
+        String parameters = "";
+        if(m.find()){
+            parameters = m.group();
+        }
+        else{
+            throw new java.lang.RuntimeException("Error al extraer parametros");
+        }
+        return parameters.replaceAll("[()]","").split(",");
     }
 
     private String replaceParameters(String rule, String query){
@@ -99,7 +105,7 @@ public  class Database {
         if(databaseRule==null){
             return false;
         }
-        String queryRule = replaceParameters(databaseRule, query);
+        String queryRule = replaceParameters(filter(databaseRule),query);
         String ruleDefinition = queryRule.split(":-")[1];
         List<String> facts = factManager.getMultipleFacts(ruleDefinition);
         for(int i=0;i<facts.size();i++){
