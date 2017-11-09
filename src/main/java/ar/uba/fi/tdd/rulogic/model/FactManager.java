@@ -29,10 +29,4 @@ public class FactManager {
         }
         return list;
     }
-
-    public String getName(String fact){
-        String[] parts = fact.split("\\(");
-        return parts[0];
-    }
-
 }

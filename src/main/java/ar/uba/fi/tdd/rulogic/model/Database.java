@@ -21,7 +21,6 @@ public  class Database {
 
     private String FACT_REGEX = "\\w+\\(\\w+(, \\w+)*\\).";
     private String RULE_REGEX = "\\w+\\(\\w+(, \\w+)*\\) :- (\\w+\\(\\w+(, \\w+)*\\), )*\\w+\\(\\w+(, \\w+)*\\).";
-    //hijo(X,Y):-varon(X),padre(Y,X)
 //
 
     public Database(){

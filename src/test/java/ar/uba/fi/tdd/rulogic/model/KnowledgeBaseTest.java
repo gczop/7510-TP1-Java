@@ -17,7 +17,7 @@ public class KnowledgeBaseTest {
 	public void setUp() throws Exception {
 		initMocks(this);
 		knowledgeBase = new KnowledgeBase();
-		knowledgeBase.useDatabase("/src/main/resources/rules.db");
+		knowledgeBase.useDatabase("src/main/resources/rules.db");
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class KnowledgeBaseTest {
 
 
 	@Test(expected = RuntimeException.class)
-	public void testQueryInvalidaTiraError1() {
+	public void testQueryInvalidaTiraError() {
 		this.knowledgeBase.answer("esposa");
 	}
 
@@ -69,6 +69,11 @@ public class KnowledgeBaseTest {
 	@Test(expected = RuntimeException.class)
 	public void testQueryInvalidaTiraError3() {
 		this.knowledgeBase.answer("varon(juan)");
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void testDiferenteCantidadDeParametrosEnRuleTiraError() {
+		this.knowledgeBase.answer("hijo(pepe, juan, ramiro).");
 	}
 
 	@Test
@@ -91,8 +96,4 @@ public class KnowledgeBaseTest {
 		Assert.assertFalse(this.knowledgeBase.answer("hijo(julian, francisco)."));
 	}
 
-	@Test
-	public void test1(){
-		knowledgeBase.tryTest();
-	}
 }
